@@ -5,14 +5,15 @@ import Button from '../../UI/Button/Button'
 
 const CheckoutSummary = (props) => {
 
+
     return (
         <div className={classes.CheckoutSummary}>
             <h1>We hope it tastes well</h1>
             <div style={{width: '100%', margin: 'auto'}}>
                 <Burger types={props.ingrediants}/>
             </div>
-            <Button btnType="Danger" clicked>CANCEL</Button>
-            <Button btnType="Success" clicked>CONTINUE</Button>
+            <Button btnType="Danger" click={props.checkoutCancelled}>CANCEL</Button>
+            <Button btnType="Success" click={props.checkoutContinue}>CONTINUE</Button>
         </div>
     )
 };
