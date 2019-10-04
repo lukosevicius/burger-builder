@@ -40,34 +40,25 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    console.log('click');
-    this.props.history.push('/checkout');
-    // this.setState({ loading: true });
+    // const queryString = ('price=' + this.state.totalPrice);
 
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: "Mantas",
-    //     address: {
-    //       street: "Teststreet 45",
-    //       zip: "51514",
-    //       country: "Lithuania"
-    //     },
-    //     email: "test@test.com"
-    //   },
-    //   deliveryMethod: "fastest"
-    // };
+    const queryParams = [];
 
-    // Axios.post("/orders.json", order)
-    //   .then(() => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     this.setState({ loading: false, purchasing: false });
-    //   });
+    queryParams.push('price=' + this.state.totalPrice)
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
 
+    const queryString = queryParams.join("&");
+
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString
+    });
   };
 
   purchaseHandler = () => {
@@ -145,7 +136,6 @@ class BurgerBuilder extends Component {
     let orderSummary = null;
 
     if (this.state.ingredients) {
-      
       burger = (
         <Fragment>
           <Burger types={this.state.ingredients} />
