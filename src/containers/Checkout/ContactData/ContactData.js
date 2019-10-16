@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Button from "../../../components/UI/Button/Button";
@@ -95,15 +96,15 @@ class ContactData extends Component {
   checkValidity = (value, rules) => {
     let isValid = true;
 
-    if(rules) {
+    if (rules) {
       if (rules.required) {
         isValid = value.trim() !== "" && isValid;
       }
-  
+
       if (rules.minLength) {
         isValid = value.length >= rules.minLength && isValid;
       }
-  
+
       if (rules.maxLength) {
         isValid = value.length <= rules.maxLength && isValid;
       }
@@ -125,7 +126,7 @@ class ContactData extends Component {
     }
 
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData
     };
@@ -157,11 +158,10 @@ class ContactData extends Component {
     );
     updatedFormElement.touched = true;
 
-    
     updatedOrderForm[inputIdentifier] = updatedFormElement;
-    
+
     let formIsvalid = true;
-    for (let inputIdentifier in updatedOrderForm){
+    for (let inputIdentifier in updatedOrderForm) {
       formIsvalid = updatedOrderForm[inputIdentifier].valid && formIsvalid;
     }
 
@@ -191,7 +191,9 @@ class ContactData extends Component {
           />
         ))}
 
-        <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
+        <Button btnType="Success" disabled={!this.state.formIsValid}>
+          ORDER
+        </Button>
       </form>
     );
     if (this.state.loading) {
@@ -207,4 +209,11 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients,
+    price: state.totalPrice
+  };
+};
+
+export default connect(mapStateToProps)(ContactData);
